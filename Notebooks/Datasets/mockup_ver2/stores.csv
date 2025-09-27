@@ -1,51 +1,51 @@
 ﻿store_id,zone,province,profile
-S001,6,กรุงเทพฯ,Entertainment Venue
-S002,4,ชลบุรี,Office
-S003,5,นครราชสีมา,Hospital
-S004,5,ภูเก็ต,Office
-S005,9,ขอนแก่น,Factory
-S006,1,ชลบุรี,Tourist Attraction
-S007,2,เชียงใหม่,Educational Institution
-S008,6,ภูเก็ต,Hospital
-S009,5,ภูเก็ต,Hospital
-S010,11,ชลบุรี,Office
-S011,7,ภูเก็ต,Hospital
-S012,3,สุราษฎร์ธานี,Factory
-S013,3,ชลบุรี,Educational Institution
-S014,10,กรุงเทพฯ,Transport Hub
-S015,2,อุบลราชธานี,Entertainment Venue
-S016,3,นครราชสีมา,Office
-S017,10,สงขลา,Entertainment Venue
-S018,1,นนทบุรี,Transport Hub
-S019,5,ภูเก็ต,Office
-S020,12,กรุงเทพฯ,Office
-S021,5,ขอนแก่น,Educational Institution
-S022,12,ขอนแก่น,Entertainment Venue
-S023,11,นนทบุรี,Residential/Market
-S024,7,นครราชสีมา,Entertainment Venue
-S025,4,ภูเก็ต,Tourist Attraction
-S026,3,สุราษฎร์ธานี,Tourist Attraction
-S027,1,นนทบุรี,Office
-S028,12,นครราชสีมา,Residential/Market
-S029,8,ภูเก็ต,Gas Station
-S030,3,กรุงเทพฯ,Transport Hub
-S031,2,อุบลราชธานี,Factory
-S032,11,สุราษฎร์ธานี,Residential/Market
-S033,4,สงขลา,Factory
-S034,3,ขอนแก่น,Entertainment Venue
-S035,1,เชียงใหม่,Entertainment Venue
-S036,3,กรุงเทพฯ,Factory
-S037,12,ขอนแก่น,Transport Hub
-S038,2,ชลบุรี,Residential/Market
-S039,8,เชียงใหม่,Gas Station
-S040,6,ขอนแก่น,Office
-S041,9,นครราชสีมา,Educational Institution
-S042,8,สุราษฎร์ธานี,Entertainment Venue
-S043,10,ขอนแก่น,Tourist Attraction
-S044,3,สงขลา,Transport Hub
-S045,5,อุบลราชธานี,Educational Institution
-S046,7,นครราชสีมา,Gas Station
-S047,5,กรุงเทพฯ,Hospital
-S048,8,กรุงเทพฯ,Office
-S049,12,กรุงเทพฯ,Entertainment Venue
-S050,5,กรุงเทพฯ,Office
+S001,3,สุราษฎร์ธานี,Residential/Market
+S002,5,สุราษฎร์ธานี,Hospital
+S003,10,กรุงเทพฯ,Gas Station
+S004,8,สุราษฎร์ธานี,Entertainment Venue
+S005,10,ภูเก็ต,Tourist Attraction
+S006,12,นนทบุรี,Educational Institution
+S007,10,เชียงใหม่,Hospital
+S008,12,นนทบุรี,Educational Institution
+S009,8,นครราชสีมา,Office
+S010,3,อุบลราชธานี,Tourist Attraction
+S011,9,ภูเก็ต,Tourist Attraction
+S012,9,กรุงเทพฯ,Gas Station
+S013,8,สงขลา,Entertainment Venue
+S014,11,สุราษฎร์ธานี,Factory
+S015,1,ชลบุรี,Educational Institution
+S016,2,สุราษฎร์ธานี,Educational Institution
+S017,9,นครราชสีมา,Hospital
+S018,6,กรุงเทพฯ,Educational Institution
+S019,4,สงขลา,Residential/Market
+S020,6,ขอนแก่น,Entertainment Venue
+S021,1,ภูเก็ต,Transport Hub
+S022,6,นครราชสีมา,Hospital
+S023,4,สุราษฎร์ธานี,Gas Station
+S024,12,อุบลราชธานี,Entertainment Venue
+S025,6,นนทบุรี,Entertainment Venue
+S026,1,สุราษฎร์ธานี,Transport Hub
+S027,9,กรุงเทพฯ,Educational Institution
+S028,6,เชียงใหม่,Office
+S029,8,กรุงเทพฯ,Hospital
+S030,2,อุบลราชธานี,Gas Station
+S031,3,สุราษฎร์ธานี,Factory
+S032,5,กรุงเทพฯ,Transport Hub
+S033,1,นครราชสีมา,Residential/Market
+S034,6,สงขลา,Educational Institution
+S035,12,อุบลราชธานี,Gas Station
+S036,10,กรุงเทพฯ,Entertainment Venue
+S037,10,ขอนแก่น,Educational Institution
+S038,11,กรุงเทพฯ,Educational Institution
+S039,5,ภูเก็ต,Factory
+S040,1,ชลบุรี,Residential/Market
+S041,6,นครราชสีมา,Office
+S042,4,อุบลราชธานี,Gas Station
+S043,8,ขอนแก่น,Gas Station
+S044,1,ขอนแก่น,Gas Station
+S045,10,นครราชสีมา,Gas Station
+S046,4,เชียงใหม่,Educational Institution
+S047,8,ภูเก็ต,Hospital
+S048,10,กรุงเทพฯ,Gas Station
+S049,8,สุราษฎร์ธานี,Factory
+S050,3,สงขลา,Hospital
