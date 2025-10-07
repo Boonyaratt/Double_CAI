@@ -1,0 +1,77 @@
+{
+  "artifacts": {
+    "ptype_model": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\models\\ptype_model.pkl",
+      "sha256": "b5abe5dc79eed5b6596c646f0ab6c7289bc63722a36b9119a8e2652e2c4ada38"
+    },
+    "ranker_model": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\models\\ranker_model.pkl",
+      "sha256": "c3fe6eeae50b5fcc008ce04c86fbb42a99ad70d2bf87df7c52ce5d11da3fcb56"
+    },
+    "scaler_need": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\preprocessors\\scaler_need.pkl",
+      "sha256": "55c5100229b893214fa96cd0c4491b97fe4bbe618ea6357e4b96e5383a291a83"
+    },
+    "pca_need": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\preprocessors\\pca_need.pkl",
+      "sha256": "75759403993259f4012f173244ae06b69993732125f4b4bc67cde1e8e57c6dcf"
+    },
+    "kmeans_need": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\preprocessors\\kmeans_need.pkl",
+      "sha256": "47a50d470be59625884a11d6f1a10c91f60d86e59d5fb1344e7f04448a7d7f6b"
+    },
+    "ptype_classes": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\metadata\\ptype_classes.json",
+      "sha256": "6ad1ffe49f396441cf0f23fa4c0e3637558650c4d7616774fe7a6d02d9c9751b"
+    },
+    "ptype_featcols": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\metadata\\ptype_featcols.json",
+      "sha256": "9c8a8db722140cdda86b3858b6de5e5f9a0e778e2acd6e8f6662091c58a20c84"
+    },
+    "ranker_featcols": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\metadata\\ranker_featcols.json",
+      "sha256": "5fa76af0e8dce5df7cc3e725574d12733f652bfc1b75b44b704067ce668a18b0"
+    },
+    "encoders": {
+      "path": "E:\\Double-CAI\\models\\artifacts\\metadata\\encoders.json",
+      "sha256": "2b22cdb358a50813894b2dcbd3f632e7b09db7fbd571f259d9ce2105d9a64a44"
+    }
+  },
+  "contract": {
+    "inputs": {
+      "basket": [
+        "transaction_id",
+        "timestamp",
+        "user_id",
+        "store_id",
+        "zone",
+        "province",
+        "profile",
+        "is_online",
+        "amount_total",
+        "qty_total"
+      ],
+      "promotions": [
+        "promo_id",
+        "promo_type",
+        "channel",
+        "start_date",
+        "end_date",
+        "min_spend",
+        "product_scope",
+        "store_scope"
+      ]
+    },
+    "outputs": {
+      "ranked_promos": [
+        "transaction_id",
+        "promo_id",
+        "promo_type",
+        "score",
+        "ptype_prob",
+        "scope_match_score",
+        "reason_codes"
+      ]
+    }
+  }
+}

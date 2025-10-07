@@ -1,0 +1,22 @@
+[
+  "ptype_prob",
+  "scope_match_score",
+  "min_spend_gap",
+  "channel_match",
+  "within_window",
+  "hour",
+  "dayofweek",
+  "is_weekend",
+  "month",
+  "is_online",
+  "amount_total",
+  "qty_total",
+  "ns_pca_1",
+  "ns_pca_2",
+  "ns_cluster",
+  "promo_type__Buy 1 get 1",
+  "promo_type__Brandday",
+  "promo_type__Flash Sale",
+  "promo_type__Mega Sale",
+  "promo_type__Product_Coupon"
+]

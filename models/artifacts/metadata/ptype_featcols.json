@@ -1,0 +1,12 @@
+[
+  "hour",
+  "dayofweek",
+  "is_weekend",
+  "month",
+  "is_online",
+  "amount_total",
+  "qty_total",
+  "ns_pca_1",
+  "ns_pca_2",
+  "ns_cluster"
+]

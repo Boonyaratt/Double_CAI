@@ -1,0 +1,103 @@
+paths:
+  data_tx: data/tx_merge3.csv
+  data_promos: data/promotions.csv
+  artifacts_root: models/artifacts
+  models_dir: models/artifacts/models
+  preprocessors_dir: models/artifacts/preprocessors
+  metadata_dir: models/artifacts/metadata
+  reports_dir: reports
+
+random_seed: 42
+
+column_map_tx:
+  transaction_id: transaction_id
+  timestamp: timestamp
+  user_id: user_id
+  store_id: store_id
+  zone: stores.zone
+  province: stores.province
+  profile: stores.profile
+  is_online: is_online
+  amount_total: amount_total
+  qty_total: qty_total
+  used_type: promotion_type
+  promo_id_used: promo_id
+  product_category: products.category
+  product_brand: products.brand
+  product_id: product_id
+  qty: qty
+  price: price
+
+column_map_promo:
+  promo_id: promo_id
+  promo_type: promo_type
+  channel: channel
+  start_date: start_date
+  end_date: end_date
+  min_spend: min_spend
+  product_scope: product_id
+  store_scope: store_scope
+
+ptype_list: null
+
+split:
+  strategy: time_based
+  time_column: timestamp
+  valid_start: null
+  n_splits: 5
+  group_by: store_id
+
+recall:
+  topk_types: 3
+  relevance_threshold: 0.05
+
+negative_sampling_ratio: 5
+
+filters:
+  use_time_window: true
+  respect_channel: false
+  respect_store_scope: false
+
+ptype_model:
+  impl: lightgbm
+  params:
+    n_estimators: 300
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_lambda: 1.0
+
+ranker_model:
+  impl: lightgbm
+  params:
+    n_estimators: 500
+    num_leaves: 63
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_samples: 20
+
+need_state:
+  kmeans_k: 8
+  pca_components: 6
+
+features:
+  ptype:
+    time: [hour, dayofweek, is_weekend, month]
+    store: [zone, province, profile]
+    channel: [is_online]
+    basket: [amount_total, qty_total, expected_basket_items, loyalty_score, price_elasticity]
+    need_state: [ns_pca_1, ns_pca_2, ns_pca_3, ns_pca_4, ns_pca_5, ns_pca_6, ns_cluster_*]
+  ranker:
+    time: [hour, dayofweek, is_weekend, month]
+    store: [zone, province, profile]
+    channel: [is_online, channel_match, within_window]
+    basket: [amount_total, qty_total, expected_basket_items, loyalty_score, price_elasticity]
+    need_state: [ns_pca_1, ns_pca_2, ns_pca_3, ns_pca_4, ns_pca_5, ns_pca_6, ns_cluster_*]
+    scope_match: [scope_match_score, min_spend_gap]
+    ptype: [ptype_prob]
+
+business:
+  one_bill_one_promo: true
+  topN: 3
