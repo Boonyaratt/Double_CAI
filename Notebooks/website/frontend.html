@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>POS Promotion Recommender (Top-5)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#f7f8fa; --card:#fff; --text:#1f2937; --muted:#6b7280; --accent:#111827; }
+    body{margin:0;background:var(--bg);color:var(--text);font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;}
+    .container{max-width:1100px;margin:24px auto;padding:0 16px;}
+    .row{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:920px){.row{grid-template-columns:1fr 2fr;}}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    .card .hd{padding:14px 16px;border-bottom:1px solid #e5e7eb;font-weight:600}
+    .card .bd{padding:16px}
+    .muted{color:var(--muted)}
+    input,button,select{font:inherit}
+    input,select{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:12px;outline:none}
+    input:focus,select:focus{border-color:#111827}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid #111827;background:#111827;color:#fff;cursor:pointer}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .btn-outline{border-color:#e5e7eb;background:#fff;color:#111827}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+    .flex{display:flex;gap:8px;align-items:center}
+    .right{justify-content:flex-end}
+    .mt8{margin-top:8px} .mt12{margin-top:12px} .mt16{margin-top:16px} .mt24{margin-top:24px}
+    .list{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
+    @media(min-width:700px){.list{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:1000px){.list{grid-template-columns:repeat(5,1fr)}}
+    .pill{font-size:12px;border:1px solid #e5e7eb;padding:2px 8px;border-radius:999px;color:#374151;background:#f9fafb}
+    .score{font-weight:700;font-size:24px}
+    .small{font-size:12px}
+    .kbd{font-size:12px;border:1px solid #e5e7eb;border-bottom-width:2px;border-radius:8px;padding:2px 6px;background:#fff}
+    .footer{font-size:12px;color:#6b7280;margin:16px 0}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="flex" style="justify-content:space-between;">
+      <h1 style="font-size:20px">POS Promotion Recommender <span class="muted">(Top-5)</span></h1>
+      <div class="flex">
+        <label class="muted small">API URL:&nbsp;</label>
+        <input id="apiUrl" style="width:320px" placeholder="http://localhost:8000" />
+        <button class="btn btn-outline" id="saveApi">Save</button>
+      </div>
+    </div>
+
+    <div class="row mt16">
+      <!-- ลูกค้า/สาขา -->
+      <div class="card">
+        <div class="hd">ข้อมูลลูกค้า/สาขา</div>
+        <div class="bd">
+          <div class="grid-2">
+            <div>
+              <label class="small muted">User ID</label>
+              <input id="userId" placeholder="U0001" value="U0001" />
+            </div>
+            <div>
+              <label class="small muted">Store ID</label>
+              <input id="storeId" placeholder="S0123" value="S0123" />
+            </div>
+          </div>
+          <div class="mt12">
+            <label class="small muted">Timestamp (ว่างไว้ = ใช้เวลาปัจจุบัน)</label>
+            <input id="ts" placeholder="2025-10-08T13:20:00+07:00" />
+          </div>
+          <div class="footer">Hint: กด <span class="kbd">Save</span> เพื่อจำ API URL ไว้ในเบราว์เซอร์</div>
+        </div>
+      </div>
+
+      <!-- ตะกร้าสินค้า -->
+      <div class="card">
+        <div class="hd">ตะกร้าสินค้า</div>
+        <div class="bd">
+          <div id="basketRows"></div>
+          <div class="flex right mt12">
+            <button class="btn btn-outline" id="addRow">+ เพิ่มสินค้า</button>
+          </div>
+          <div class="flex mt12" style="justify-content:space-between;">
+            <div class="muted">รวม: <span id="sumItems">0</span> ชิ้น • <span id="sumAmount">0</span> บาท</div>
+            <button class="btn" id="go">แนะนำโปร 5 อันดับ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ผลลัพธ์ -->
+    <div class="card mt16">
+      <div class="hd">ผลลัพธ์</div>
+      <div class="bd">
+        <div id="status" class="muted small">ยังไม่มีการเรียกใช้งาน</div>
+        <div id="cards" class="list mt12"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Tip: ถ้าเปิด `index.html` ตรง ๆ แล้วติด CORS ให้รัน <code>python -m http.server 8080</code> แล้วเปิดผ่าน <code>http://localhost:8080</code>
+    </div>
+  </div>
+
+  <script>
+    // ======= State =======
+    const $ = sel => document.querySelector(sel);
+    const basket = [];
+
+    // ======= API URL (persist) =======
+    const apiInput = $("#apiUrl");
+    apiInput.value = localStorage.getItem("API_URL") || "http://localhost:8000";
+    $("#saveApi").onclick = () => {
+      localStorage.setItem("API_URL", apiInput.value.trim());
+      ok("บันทึก API URL แล้ว");
+    };
+
+    // ======= Helpers =======
+    const fmt = n => new Intl.NumberFormat("th-TH", { maximumFractionDigits: 2 }).format(n || 0);
+    const nowISO = () => new Date().toISOString();
+
+    function renderBasket() {
+      const host = $("#basketRows");
+      host.innerHTML = "";
+      basket.forEach((row, i) => {
+        const div = document.createElement("div");
+        div.className = "grid-3 mt8";
+        div.innerHTML = `
+          <input placeholder="product_id" value="${row.product_id}" data-i="${i}" data-k="product_id"/>
+          <input type="number" min="1" placeholder="qty" value="${row.qty}" data-i="${i}" data-k="qty"/>
+          <div class="flex">
+            <input type="number" min="0" placeholder="price" value="${row.price}" data-i="${i}" data-k="price"/>
+            <button class="btn btn-outline" data-i="${i}" data-action="del" style="white-space:nowrap">ลบ</button>
+          </div>
+        `;
+        host.appendChild(div);
+      });
+
+      // bind
+      host.querySelectorAll("input").forEach(inp => {
+        inp.oninput = (e) => {
+          const i = +e.target.dataset.i;
+          const k = e.target.dataset.k;
+          let v = e.target.value;
+          if (k !== "product_id") v = Number(v);
+          basket[i][k] = v;
+          updateTotals();
+        };
+      });
+      host.querySelectorAll("button[data-action='del']").forEach(btn => {
+        btn.onclick = () => {
+          basket.splice(+btn.dataset.i, 1);
+          renderBasket();
+          updateTotals();
+        };
+      });
+
+      updateTotals();
+    }
+
+    function updateTotals() {
+      const items = basket.reduce((a,b) => a + Number(b.qty||0), 0);
+      const amount = basket.reduce((a,b) => a + Number(b.qty||0) * Number(b.price||0), 0);
+      $("#sumItems").textContent = fmt(items);
+      $("#sumAmount").textContent = fmt(amount);
+    }
+
+    function ok(msg){ $("#status").textContent = msg; $("#status").className = "small"; }
+    function err(msg){ $("#status").textContent = msg; $("#status").className = "small"; }
+
+    function card(rec, idx){
+      const score = (rec.expected_uplift != null) ? Math.round(rec.expected_uplift * 100) + "%" : "-";
+      return `
+        <div class="card">
+          <div class="bd">
+            <div class="flex" style="justify-content:space-between;">
+              <span class="pill">#${idx+1}</span>
+              <span class="pill">${rec.promotion_type || "-"}</span>
+            </div>
+            <div class="mt12" style="font-weight:700">${rec.title || rec.promotion_id}</div>
+            <div class="muted small mt8">promotion_id: ${rec.promotion_id || "-"}</div>
+            <div class="mt12">คาดว่าเพิ่มโอกาสสำเร็จ</div>
+            <div class="score">${score}</div>
+            ${rec.meta && rec.meta.product_scope ? `<div class="small muted mt8">scope: ${rec.meta.product_scope}</div>` : ""}
+          </div>
+        </div>
+      `;
+    }
+
+    // ======= Init basket =======
+    basket.push({product_id:"P001", qty:2, price:25});
+    basket.push({product_id:"P113", qty:1, price:35});
+    renderBasket();
+
+    $("#addRow").onclick = () => {
+      basket.push({product_id:"", qty:1, price:0});
+      renderBasket();
+    };
+
+    // ======= Call API =======
+    $("#go").onclick = async () => {
+      const url = (localStorage.getItem("API_URL") || apiInput.value || "").trim();
+      if(!url){ err("กรุณากรอก API URL"); return; }
+
+      const payload = {
+        user_id: $("#userId").value.trim() || null,
+        store_id: $("#storeId").value.trim() || null,
+        basket: basket.map(b => ({ product_id: String(b.product_id||""), qty: Number(b.qty||0), price: Number(b.price||0) }))
+          .filter(b => b.product_id && b.qty>0),
+        timestamp: ($("#ts").value.trim() || null)
+      };
+      if (!payload.timestamp) payload.timestamp = nowISO();
+
+      if (payload.basket.length === 0){
+        err("โปรดใส่สินค้าอย่างน้อย 1 รายการ");
+        return;
+      }
+
+      $("#go").disabled = true;
+      ok("กำลังประมวลผล...");
+      $("#cards").innerHTML = "";
+
+      try {
+        const res = await fetch(`${url.replace(/\/$/,'')}/recommend?k=5`, {
+          method:"POST", headers:{"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        });
+        if(!res.ok){
+          const txt = await res.text();
+          throw new Error(`HTTP ${res.status}: ${txt}`);
+        }
+        const data = await res.json();
+        ok(`สำเร็จใน ${data.latency_ms ?? '-'} ms • ได้ ${data.top_k?.length ?? 0} โปร`);
+        const html = (data.top_k || []).map((r,i) => card(r,i)).join("");
+        $("#cards").innerHTML = html || "<div class='muted'>ไม่มีคำแนะนำ</div>";
+      } catch(e){
+        console.error(e);
+        err("เกิดข้อผิดพลาด: " + e.message);
+      } finally {
+        $("#go").disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>
