@@ -1,0 +1,4 @@
+{
+  "best_threshold_for_used_coupon": 0.85,
+  "objective": "maximize_F1_class1"
+}
